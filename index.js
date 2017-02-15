@@ -1,4 +1,5 @@
-var _regions = regions_2017
+var _regions = regions_2017;
+var selectedRegion = null;
 
 function facetsPromise() {
   return fetch('https://inspire.data.gouv.fr/api/geogw/records?availability=yes&opendata=yes&facets.organization=10000&resultParts=facets&facets%5Bcatalog%5D=0&facets%5Bkeyword%5D=0')
@@ -138,25 +139,29 @@ function drawRegions() {
 }
 
 function displayInfos(evt) {
-  var data_nb = 0;
+  var dataNb = 0;
   var regionNode = evt.target.id ? evt.target : evt.target.parentNode;
 
-  resetRegionInfos();
-
+  resetRegionInfos(regionNode);
+  selectedRegion = regionNode;
+  regionNode.style.strokeWidth = '3px';
   for (var i = 0; i < _regions.length; i++) {
     if (_regions[i].code === regionNode.id) {
       if (_regions[i].organizations) {
         for (var y = 0; y < _regions[i].organizations.length; y++) {
-          data_nb += _regions[i].organizations[y].count;
+          dataNb += _regions[i].organizations[y].count;
         }
       }
       document.getElementById('region_name').innerHTML += `<b>${_regions[i].nom}</b>`;
-      document.getElementById('data_nb').innerHTML += `<b>${data_nb}</b>`;
+      document.getElementById('data_nb').innerHTML += `<b>${dataNb}</b>`;
     }
   }
 }
 
 function resetRegionInfos() {
+  if (selectedRegion) {
+    selectedRegion.style.strokeWidth = '1px';
+  }
   document.getElementById('region_name').innerHTML = 'Région: ';
   document.getElementById('data_nb').innerHTML = 'Nombre de données éligibles: ';
 }
