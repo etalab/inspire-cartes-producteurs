@@ -14,3 +14,28 @@ h1, h2, h3, h4 {
   justify-content: space-around;
   align-items: center;
 }
+
+.legends {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  font-size: small;
+}
+
+.legends div {
+  width: 50px;
+  height: 20px;
+  margin: 0 5px 0 5px;
+}
+
+.legends .new {
+  background-color: #c6fbc3;
+}
+
+.legends .old {
+  background-color: #eff2a3;
+}
+
+.legends .none {
+  background-color: whitesmoke;
+}
