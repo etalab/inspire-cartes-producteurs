@@ -1,4 +1,4 @@
-[
+var regions_2017 = [
   {
     "nom": "Guadeloupe",
     "code": "01"
@@ -71,4 +71,4 @@
     "nom": "Corse",
     "code": "94"
   }
-]
+];
