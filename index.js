@@ -1,16 +1,14 @@
 var _regions = regions_2017;
 var selectedRegion = null;
 
-function facetsPromise() {
-  return fetch('https://inspire.data.gouv.fr/api/geogw/records?availability=yes&opendata=yes&facets.organization=10000&resultParts=facets&facets%5Bcatalog%5D=0&facets%5Bkeyword%5D=0')
-    .then(function(response) {
-      return response.json()
-    })
-    .catch(function(err) {
-      console.log(err);
-      return [];
-    })
-}
+var facetsPromise = fetch('https://inspire.data.gouv.fr/api/geogw/records?availability=yes&opendata=yes&facets.organization=10000&resultParts=facets&facets%5Bcatalog%5D=0&facets%5Bkeyword%5D=0')
+  .then(function(response) {
+    return response.json()
+  })
+  .catch(function(err) {
+    console.log(err);
+    return [];
+  });
 
 var regionsPromises = fetch('https://geo.api.gouv.fr/regions')
   .then(function(response) {
@@ -19,7 +17,7 @@ var regionsPromises = fetch('https://geo.api.gouv.fr/regions')
   .catch(function(err) {
     console.log(err);
     return [];
-  })
+  });
 
 function getPos(str) {
   var pos = str.indexOf(' ');
@@ -133,7 +131,7 @@ function drawRegions() {
     if (element) {
       element.style.fill = getColor(element, _regions[i]);
     } else {
-      console.log(`Le région ${_regions[i].nom} [${_regions[i].code}] n'est pas sur la carte.`);
+      console.log('Le région %s [%s] n\'est pas sur la carte.', _regions[i].nom, _regions[i].code);
     }
   }
 }
@@ -142,7 +140,7 @@ function displayInfos(evt) {
   var dataNb = 0;
   var regionNode = evt.target.id ? evt.target : evt.target.parentNode;
 
-  resetRegionInfos(regionNode);
+  resetRegionInfos();
   selectedRegion = regionNode;
   regionNode.style.strokeWidth = '3px';
   for (var i = 0; i < _regions.length; i++) {
@@ -152,8 +150,8 @@ function displayInfos(evt) {
           dataNb += _regions[i].organizations[y].count;
         }
       }
-      document.getElementById('region_name').innerHTML += `<b>${_regions[i].nom}</b>`;
-      document.getElementById('data_nb').innerHTML += `<b>${dataNb}</b>`;
+      document.getElementById('region_name').innerHTML = 'Région : <b>' + _regions[i].nom + '</b>';
+      document.getElementById('data_nb').innerHTML = 'Nombre de données éligibles : <b>' + dataNb + '</b>';
     }
   }
 }
@@ -162,13 +160,11 @@ function resetRegionInfos() {
   if (selectedRegion) {
     selectedRegion.style.strokeWidth = '1px';
   }
-  document.getElementById('region_name').innerHTML = 'Région: ';
-  document.getElementById('data_nb').innerHTML = 'Nombre de données éligibles: ';
 }
 
 document.getElementById('svg')
   .addEventListener('load', function() {
-    facetsPromise()
+    facetsPromise
       .then(function(response) {
         var facets = response.facets;
         var organizations = filterOrganization(facets.organization);
@@ -179,4 +175,10 @@ document.getElementById('svg')
         })
         drawRegions();
       })
-    })
+
+      var regions = document.querySelectorAll('#regions_fxx *[id]');
+      for(var i = 0; i < regions.length; i++) {
+        regions[i].addEventListener('click', displayInfos);
+        // regions[i].addEventListener('mouseenter', displayInfos);
+      }
+    });
