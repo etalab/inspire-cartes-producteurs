@@ -1,7 +1,7 @@
 var _regions = regions_2017;
 var selectedRegion = null;
 
-var facetsPromise = fetch('https://inspire.data.gouv.fr/api/geogw/records?availability=yes&opendata=yes&facets.organization=10000&resultParts=facets&facets%5Bcatalog%5D=0&facets%5Bkeyword%5D=0')
+var facetsPromise = fetch('https://inspire.data.gouv.fr/api/geogw/records?availability=yes&opendata=yes&facets.organization=10000&resultParts=facets&facets[catalog]=0&facets[keyword]=0')
   .then(function(response) {
     return response.json()
   })
@@ -136,24 +136,89 @@ function drawRegions() {
   }
 }
 
-function displayInfos(evt) {
+function getRegionNode(evt) {
+  return evt.target.id ? evt.target : evt.target.parentNode;
+}
+
+function focusRegion(evt) {
+  var regionNode = getRegionNode(evt);
+
+  regionNode.style.strokeWidth = '5px';
+  regionNode.style.cursor = 'pointer';
+  regionNode.style.stroke = "#4183c4";
+}
+
+function unfocusRegion(evt) {
+  var regionNode = getRegionNode(evt);
+
+  if (regionNode !== selectedRegion) {
+    regionNode.style.strokeWidth = '1px';
+  }
+  regionNode.style.stroke="black";
+}
+
+function createOrganizationsList(region) {
+  var ul = document.createElement('ul');
+
+  if (region.organizations) {
+    region.organizations.forEach(function (organization) {
+      var div = document.createElement('div');
+      var a = document.createElement('a');
+
+      a.href = 'https://inspire.data.gouv.fr/search?availability=yes&opendata=yes&organization=' +  organization.value;
+      a.innerHTML = organization.count + ' jeux de données';
+      div.innerHTML = organization.value + ' : ';
+      div.appendChild(a);
+      ul.appendChild(div);
+    })
+  }
+
+  return ul;
+}
+
+function getRegionTotalCount(region) {
   var dataNb = 0;
-  var regionNode = evt.target.id ? evt.target : evt.target.parentNode;
+
+  if (region.organizations) {
+    region.organizations.forEach(function(organizations) {
+      dataNb += organizations.count;
+    })
+  }
+
+  return dataNb;
+}
+
+function getRegionFromMap(evt) {
+  var regionNode = getRegionNode(evt);
 
   resetRegionInfos();
   selectedRegion = regionNode;
-  regionNode.style.strokeWidth = '3px';
+  regionNode.style.strokeWidth = '4px';
+
   for (var i = 0; i < _regions.length; i++) {
-    if (_regions[i].code === regionNode.id) {
-      if (_regions[i].organizations) {
-        for (var y = 0; y < _regions[i].organizations.length; y++) {
-          dataNb += _regions[i].organizations[y].count;
-        }
-      }
-      document.getElementById('region_name').innerHTML = 'Région : <b>' + _regions[i].nom + '</b>';
-      document.getElementById('data_nb').innerHTML = 'Nombre de données éligibles : <b>' + dataNb + '</b>';
-    }
+    if (_regions[i].code === regionNode.id) return _regions[i];
   }
+}
+
+function displayData(region) {
+  var inspireDiv = document.getElementById('inspire')
+  var list = createOrganizationsList(region);
+
+  if (inspireDiv.hasChildNodes()) {
+    inspireDiv.removeChild(inspireDiv.childNodes[0]);
+  }
+  inspireDiv.appendChild(list);
+}
+
+function displayInfos(evt) {
+  var region = getRegionFromMap(evt);
+  var data = getRegionTotalCount(region);
+
+  displayData(region);
+
+  document.getElementById('region_name').innerHTML = 'Région : <b>' + region.nom + '</b>';
+  document.getElementById('data_nb').innerHTML = 'Nombre de données éligibles : <b>' + data + '</b>';
+
 }
 
 function resetRegionInfos() {
@@ -169,7 +234,7 @@ document.getElementById('svg')
         var facets = response.facets;
         var organizations = filterOrganization(facets.organization);
 
-        organizations.map(function(organization) {
+        organizations.forEach(function(organization) {
           var match = matchDRAAFAndRegion(organization);
           if (!match) console.log('Erreur avec l\'organisation: ', organization);
         })
@@ -177,8 +242,9 @@ document.getElementById('svg')
       })
 
       var regions = document.querySelectorAll('#regions_fxx *[id]');
-      for(var i = 0; i < regions.length; i++) {
-        regions[i].addEventListener('click', displayInfos);
-        // regions[i].addEventListener('mouseenter', displayInfos);
-      }
+      regions.forEach(function(region) {
+        region.addEventListener('click', displayInfos);
+        region.addEventListener('mouseenter', focusRegion);
+        region.addEventListener('mouseout', unfocusRegion);
+      })
     });
