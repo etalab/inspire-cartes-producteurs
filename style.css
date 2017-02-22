@@ -19,31 +19,89 @@ h2 {
 
 .content {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
+}
+
+.map {
+  display: flex;
+  flex-direction: column;
+}
+
+.infos {
+  width: 50%;
+  text-align: center;
+}
+
+#inspire {
+  font-size: medium;
+}
+
+ul {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-left: 100px;
 }
 
 .legends {
   display: flex;
-  justify-content: space-around;
   flex-wrap: wrap;
   font-size: small;
+  justify-content: center;
 }
 
-.legends div {
-  width: 50px;
-  height: 20px;
+.legend {
+  display: inherit;
+  align-items: center;
+}
+
+.legend div {
+  width: 36px;
+  height: 14px;
   margin: 0 5px 0 5px;
 }
 
-.legends .new {
+.legend .new {
   background-color: #c6fbc3;
 }
 
-.legends .old {
+.legend .old {
   background-color: #eff2a3;
 }
 
-.legends .none {
+.legend .none {
   background-color: whitesmoke;
+}
+
+@media (max-width: 830px) {
+  body {
+    font-size: 125%;
+  }
+
+  .map {
+    display: flex;
+  }
+}
+
+@media (max-width: 770px) {
+  .content {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .map {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .infos {
+    width: 100%;
+    margin: 3em;
+  }
+
+  ul {
+    padding-left: 140px;
+  }
 }
