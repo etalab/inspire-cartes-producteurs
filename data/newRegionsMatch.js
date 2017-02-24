@@ -7,7 +7,7 @@ var _newRegionsMatch = [
   },
   {
     "region": {
-      "nom": "Grand-Est",
+      "nom": "Grand Est",
       "code": "44"},
     "draaf": ["Alsace", "Lorraine", "Champagne-Ardenne"]
   },

@@ -40,7 +40,7 @@ var _regions_2017 = [
     "code": "32"
   },
   {
-    "nom": "Grand-Est",
+    "nom": "Grand Est",
     "code": "44"
   },
   {
