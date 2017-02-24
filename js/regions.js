@@ -1,17 +1,4 @@
-var _regions = _regions_2017;
-
-fetchPromise()
-  .then(function(res) {
-    _data = res;
-    var organizations = filterOrganization(_data.facets.organization);
-
-    prepareRegions(organizations);
-    setColors(_regions);
-    initMap(_regions);
-  });
-
-function filterOrganization(organizations) {
-  var labels = ['DRAAF', 'DAAF', 'DRIAAF'];
+function filterOrganization(organizations, labels) {
   var posMax = getShortessLabel(labels);
   var matchs = [];
 
@@ -121,8 +108,8 @@ function getRegionFromMap(evt) {
   _selectedSegment = regionNode;
   regionNode.style.strokeWidth = '4px';
 
-  for (var i = 0; i < _regions.length; i++) {
-    if (_regions[i].code === regionNode.id) return _regions[i];
+  for (var i = 0; i < _regions_2017.length; i++) {
+    if (_regions_2017[i].code === regionNode.id) return _regions_2017[i];
   }
 }
 
