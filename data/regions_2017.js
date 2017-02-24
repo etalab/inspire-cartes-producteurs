@@ -1,4 +1,4 @@
-var regions_2017 = [
+var _regions_2017 = [
   {
     "nom": "Guadeloupe",
     "code": "01"
