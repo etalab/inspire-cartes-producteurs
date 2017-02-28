@@ -51,7 +51,7 @@ function getDepartement(departementName) {
 function createOrganizationsList(departement) {
   var div = document.createElement('div');
 
-  if (departement.ddt.count) {
+  if (departement.ddt && departement.ddt.count) {
     var a = document.createElement('a');
 
     a.href = 'https://inspire.data.gouv.fr/search?availability=yes&opendata=yes&organization=' +  departement.ddt.value;
