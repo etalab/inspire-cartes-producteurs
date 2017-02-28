@@ -49,16 +49,21 @@ function resetSegment() {
 
 
 function colorizeMap(data) {
-  data.forEach(function(organization) {
-    var element = document.getElementById('svg').getElementById(organization.code);
+  var element = null;
 
-    if (element) element.style.fill = organization.color;
+  data.forEach(function(organization) {
+    var svg = document.getElementsByTagName('svg');
+
+    for (var i = 0; i < svg.length; i++) {
+      var elem = svg[i].getElementById(organization.code);
+      if (elem) elem.style.fill = organization.color;
+    }
   })
 }
 
 function initMap(data) {
   colorizeMap(data);
-  var segments = document.querySelectorAll('#svg g *[id]');
+  var segments = document.querySelectorAll('svg g *[id]');
   segments.forEach(function(segment) {
     segment.addEventListener('click', displayInfos);
     segment.addEventListener('mouseenter', focusSegment);

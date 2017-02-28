@@ -45,6 +45,41 @@ h2 {
   flex-direction: column;
 }
 
+.maps {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.top {
+  display: flex;
+  align-items: center;
+}
+
+.france svg {
+  margin-left: 0.5em;
+}
+
+.bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.bottom svg {
+  margin: 0 1.5em 0 1.5em;
+}
+
+.left-side {
+  display: flex;
+  flex-direction: column;
+}
+
+.left-side svg {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
 .infos {
   width: 50%;
   text-align: center;
