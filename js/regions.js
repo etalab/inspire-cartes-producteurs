@@ -128,7 +128,7 @@ function displayInfos(evt) {
   var data = getRegionTotalCount(region);
 
   document.getElementById('region_name').innerHTML = '<b>' + region.nom + '</b>';
-  document.getElementById('data_nb').innerHTML = 'Nombre de données éligibles : <b>' + data + '</b>';
+  document.getElementById('data_nb').innerHTML = 'Nombre de données : <b>' + data + '</b>';
 
   displayData(region);
 }
