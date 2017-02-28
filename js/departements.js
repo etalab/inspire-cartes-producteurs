@@ -55,8 +55,7 @@ function createOrganizationsList(departement) {
     var a = document.createElement('a');
 
     a.href = 'https://inspire.data.gouv.fr/search?availability=yes&opendata=yes&organization=' +  departement.ddt.value;
-    a.innerHTML = departement.ddt.count + ' jeux de données';
-    div.innerHTML = departement.ddt.value + ' : ';
+    a.innerHTML = 'Accéder aux jeux de données';
     div.appendChild(a);
   }
 
@@ -108,7 +107,7 @@ function displayInfos(evt) {
   var data = departement.ddt ? departement.ddt.count : 0;
 
   document.getElementById('departement_name').innerHTML = '<b>' + departement.nom + '</b>';
-  document.getElementById('data_nb').innerHTML = 'Nombre de données éligibles : <b>' + data + '</b>';
+  document.getElementById('data_nb').innerHTML = 'Nombre de données : <b>' + data + '</b>';
 
   displayData(departement);
 }
