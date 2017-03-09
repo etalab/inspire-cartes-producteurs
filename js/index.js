@@ -64,7 +64,7 @@ function colorizeMap(data) {
 function initMap(data) {
   colorizeMap(data);
   var segments = document.querySelectorAll('svg g *[id]');
-  segments.forEach(function(segment) {
+  [].forEach.call(segments, function(segment) {
     segment.addEventListener('click', displayInfos);
     segment.addEventListener('mouseenter', focusSegment);
     segment.addEventListener('mouseout', unfocusSegment);
